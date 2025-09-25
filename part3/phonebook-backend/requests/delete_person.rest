@@ -1,8 +1,18 @@
-DELETE http://localhost:3001/api/persons/4
+DELETE http://localhost:3001/api/persons/68d39fe244409c9ba8a5e766
 
 ###
 
 GET http://localhost:3001/api/persons/
+
+###
+
+PUT http://localhost:3001/api/persons/68d39f8dfeda68217f6d9b21
+Content-Type: application/json
+
+{
+  "name": "Aku Ankka",
+  "number": "040-11111111"
+}
 
 ###
 
