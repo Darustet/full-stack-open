@@ -29,7 +29,7 @@ const PersonForm = (props) => {
           .catch(error => {
             console.log(error.response.data.error)
             setStyle('error')
-            setMessage(`Information of ${newName} has already been removed from server`)
+            setMessage(`Information of ${newName} has already been deleted or contains invalid phone number`)
             timeout()
           })
         
