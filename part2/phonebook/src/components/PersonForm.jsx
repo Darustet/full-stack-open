@@ -24,14 +24,15 @@ const PersonForm = (props) => {
             setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
             setNewName('')
             setNewNumber('')
+            setMessage(`Updated ${newName}'s number`)
           })
           .catch(error => {
-            console.log(error)
+            console.log(error.response.data.error)
             setStyle('error')
             setMessage(`Information of ${newName} has already been removed from server`)
             timeout()
           })
-        setMessage(`Updated ${newName}'s number`)
+        
         timeout()
       }
       return 
@@ -48,8 +49,15 @@ const PersonForm = (props) => {
         setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
+        setMessage(`${newName} added to phonebook`)
       })
-    setMessage(`${newName} added to phonebook`)
+      .catch(error => {
+        console.log(error.response.data.error)
+        setStyle('error')
+        setMessage(error.response.data.error)
+        timeout()
+      })
+    
     timeout()
   }
 
