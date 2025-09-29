@@ -6,8 +6,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "My first blog",
-  "author": "John Doe",
-  "url": "http://example.com/my-first-blog",
-  "likes": 10
+  "title": "Musings on Full Stack Development",
+  "author": "Richard Refactor",
+  "url": "http://example.com/amusing",
+  "likes": 122
 }
