@@ -20,17 +20,38 @@ blogsRouter.post('/', async (request, response) => {
     likes: body.likes,
   })
 
+  if (!blog.title || !blog.url) {
+    return response.status(400).json({ error: 'title or url is missing' })
+  }
+
   const savedBlog = await blog.save()
   response.status(201).json(savedBlog)
 })
 
+// Implement functionality for deleting a single blog post resource.
 
-/*   const blog = new Blog(request.body)
-  console.log("in blogsRouter.post " + blog)
+blogsRouter.delete('/:id', async (request, response) => {
+  await Blog.findByIdAndDelete(request.params.id)
+  response.status(204).end()
+})
 
-  blog.save().then((result) => {
-    response.status(201).json(result)
-  }) */
+// Implement functionality for updating the information of an individual blog post.
 
+blogsRouter.put('/:id', async (request, response, next) => {
+  const blog = await Blog.findById(request.params.id)
+  if (!blog) {
+    return response.status(404).end()
+  } else {
+    const { title, author, url, likes } = request.body
+
+    blog.title = title
+    blog.author = author
+    blog.url = url
+    blog.likes = likes
+
+    const updatedBlog = await blog.save()
+    response.json(updatedBlog)
+  }
+})
 
 module.exports = blogsRouter
