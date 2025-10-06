@@ -1,10 +1,7 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
-
-/* blogsRouter.get('/', (request, response) => {
-  response.send('<h1>Welcome to Blog List!</h1>')
-}) */
+const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog
@@ -12,14 +9,22 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
+
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
-  //const user = await User.findById(body.id)
-
-  let user = await User.findById(body.user)
-
-  console.log('User from request body:', user)
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
 
   if (!user) {
     users = await User.aggregate([{ $sample: { size: 1 } }])
@@ -46,14 +51,10 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-// Implement functionality for deleting a single blog post resource.
-
 blogsRouter.delete('/:id', async (request, response) => {
   await Blog.findByIdAndDelete(request.params.id)
   response.status(204).end()
 })
-
-// Implement functionality for updating the information of an individual blog post.
 
 blogsRouter.put('/:id', async (request, response, next) => {
   const blog = await Blog.findById(request.params.id)
