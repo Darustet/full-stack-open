@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const App = () => {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
-    }  
+    }
   }, [])
 
   const handleNotification = (message, type) => {
@@ -73,7 +73,7 @@ const App = () => {
 
   const addBlog = (blogObject) => {
     if (!blogObject.title || !blogObject.author || !blogObject.url) {
-      handleNotification("Please fill all fields when creating a new blog.")
+      handleNotification('Please fill all fields when creating a new blog.')
       return null
     }
 
@@ -89,7 +89,7 @@ const App = () => {
 
   const updateBlog = (blogObject) => {
     if (!blogObject.title || !blogObject.author || !blogObject.url || !blogObject.likes || !blogObject.user) {
-      handleNotification("Error updating blog")
+      handleNotification('Error updating blog')
       return null
     }
 
@@ -110,7 +110,7 @@ const App = () => {
         blogService.getAll().then(blogs => setBlogs(blogs))
       })
   }
-    
+
   const loginForm = () => (
     <LoginForm
       username={username}
@@ -134,12 +134,12 @@ const App = () => {
       return (
         <div>
           {sortedBlogs.map(blog =>
-            <Blog 
-              updateBlog={updateBlog} 
-              deleteBlog={deleteBlog} 
-              key={blog.id} 
+            <Blog
+              updateBlog={updateBlog}
+              deleteBlog={deleteBlog}
+              key={blog.id}
               blog={blog}
-              owner={blog.user && user.username === blog.user.username} 
+              owner={blog.user && user.username === blog.user.username}
             />
           )}
         </div>
@@ -160,8 +160,8 @@ const App = () => {
       )}
       {user && (
         <div>
-        <h2>Create a new blog</h2>
-        {blogForm()}
+          <h2>Create a new blog</h2>
+          {blogForm()}
         </div>
       )}
       {blogsToShow()}

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const Blog = ({ blog, updateBlog, deleteBlog, owner}) => {
+const Blog = ({ blog, updateBlog, deleteBlog, owner }) => {
   const [visible, setVisible] = useState(false)
   const showWhenVisible = { display: visible ? '' : 'none' }
 
@@ -23,8 +23,8 @@ const Blog = ({ blog, updateBlog, deleteBlog, owner}) => {
   }
 
   const handleDelete = () => {
-    const text = "Do you want to permanently remove " + blog.title + " from bloglist?"
-    if (confirm(text) == true) {
+    const text = 'Do you want to permanently remove ' + blog.title + ' from bloglist?'
+    if (confirm(text) === true) {
       const blogToDelete = blog
       deleteBlog(blogToDelete)
     }
@@ -32,7 +32,7 @@ const Blog = ({ blog, updateBlog, deleteBlog, owner}) => {
 
   return (
     <div style={blogStyle}>
-      {blog.title} {<button onClick={toggleVisibility}>{!visible ? "view" : "hide"}</button>}
+      {blog.title} {<button onClick={toggleVisibility}>{!visible ? 'view' : 'hide'}</button>}
       <div style={showWhenVisible}>
         <div>
           {blog.url}
