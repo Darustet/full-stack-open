@@ -152,7 +152,6 @@ test('a blog can be updated', async () => {
   assert.strictEqual(updatedBlog.likes, updatedBlogData.likes)
 })
 
-describe('when there is initially one user in db', () => {
   beforeEach(async () => {
     await User.deleteMany({})
 
@@ -204,7 +203,7 @@ describe('when there is initially one user in db', () => {
 
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
   })
-})
+
 
 
 after(async () => {

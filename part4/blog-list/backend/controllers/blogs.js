@@ -57,8 +57,20 @@ blogsRouter.delete('/:id', async (request, response) => {
 })
 
 blogsRouter.put('/:id', async (request, response, next) => {
+  const body = request.body
+
+  const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+
+
+  console.log("arriver at blog controllers")
   const blog = await Blog.findById(request.params.id)
+  console.log("after awaiting to be found")
   if (!blog) {
+    console.log("in blog controller, blog not found")
     return response.status(404).end()
   } else {
     const { title, author, url, likes } = request.body
@@ -67,6 +79,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
     blog.author = author
     blog.url = url
     blog.likes = likes
+    blog.user = user
 
     const updatedBlog = await blog.save()
     response.json(updatedBlog)
