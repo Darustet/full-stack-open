@@ -1,40 +1,13 @@
 GET http://localhost:3003/api/blogs
 
 ###
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaGFuICIsImlkIjoiNjhlMzVjOTk5OTRiN2ExYTcwMTc1OGZlIiwiaWF0IjoxNzU5NzQwNDg2fQ.kNRJ3WF6j70CRxuPFT-TUyg-_yDHyFydESO5Ov4GwXE
-
-{
-  "title": "You are a bold one!",
-  "author": "Anon",
-  "url": "http://example.com/boldone",
-  "likes": 31,
-  "user": "68e35c99994b7a1a701758fe"
-}
-
-
-###
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "Now hold on a minute!",
+  "title": "Musings on Full Stack Development",
   "author": "Richard Refactor",
-  "url": "http://example.com/amusing/holdon",
-  "likes": 9
+  "url": "http://example.com/amusing",
+  "likes": 122
 }
-
-###
-POST http://localhost:3003/api/users
-Content-Type: application/json
-
-{
-  "username": "test",
-  "name": "Tester",
-  "password": "password"
-}
-
-###
-GET http://localhost:3003/api/users
