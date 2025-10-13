@@ -89,13 +89,22 @@ const App = () => {
 
   const updateBlog = (blogObject) => {
     if (!blogObject.title || !blogObject.author || !blogObject.url || !blogObject.likes || !blogObject.user) {
-      console.log(blogObject)
       handleNotification("Error updating blog")
       return null
     }
 
     blogService
       .update(blogObject)
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id === returnedBlog.id ? returnedBlog : blog))
+        //setBlogs(blogs.concat(returnedBlog))
+        blogService.getAll().then(blogs => setBlogs(blogs))
+      })
+  }
+
+  const deleteBlog = (blogObject) => {
+    blogService
+      .remove(blogObject)
       .then(returnedBlog => {
         setBlogs(blogs.concat(returnedBlog))
         blogService.getAll().then(blogs => setBlogs(blogs))
@@ -120,12 +129,18 @@ const App = () => {
 
   const blogsToShow = () => {
     if (user !== null) {
+      const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
+
       return (
         <div>
-          {blogs.map(blog =>
-            blog.user && user.username === blog.user.username
-              ? <Blog updateBlog={updateBlog} key={blog.id} blog={blog} />
-              : null
+          {sortedBlogs.map(blog =>
+            <Blog 
+              updateBlog={updateBlog} 
+              deleteBlog={deleteBlog} 
+              key={blog.id} 
+              blog={blog}
+              owner={blog.user && user.username === blog.user.username} 
+            />
           )}
         </div>
       )

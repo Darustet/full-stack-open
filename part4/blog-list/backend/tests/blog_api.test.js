@@ -13,8 +13,8 @@ const User = require('../models/user')
 const api = supertest(app)
 
 beforeEach(async () => {
-    await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
+  await Blog.deleteMany({})
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 test('blogs are returned as json', async () => {
@@ -32,7 +32,7 @@ test('all blogs are returned', async () => {
 
 test('id is correctly defined', async () => {
   const blogs = await helper.blogsInDb()
-  
+
   blogs.forEach(blog => {
     assert.strictEqual(blog.id, blog.id.toString())
   })
@@ -40,9 +40,9 @@ test('id is correctly defined', async () => {
 
 test('a valid blog can be added', async () => {
   const newBlog = {
-    title: "New blog",
-    author: "John Doe",
-    url: "http://newblog.com",
+    title: 'New blog',
+    author: 'John Doe',
+    url: 'http://newblog.com',
     likes: 3
   }
 
@@ -61,9 +61,9 @@ test('a valid blog can be added', async () => {
 
 test('blog has likes', async () => {
   const newBlog = {
-    title: "Blog without likes",
-    author: "Jane Doe",
-    url: "http://blogwithoutlikes.com"
+    title: 'Blog without likes',
+    author: 'Jane Doe',
+    url: 'http://blogwithoutlikes.com'
   }
 
   await api
@@ -81,8 +81,8 @@ test('blog has likes', async () => {
 
 test('blog without title is not added', async () => {
   const newBlog = {
-    author: "Jane Doe",
-    url: "http://blogwithouttitle.com",
+    author: 'Jane Doe',
+    url: 'http://blogwithouttitle.com',
     likes: 5
   }
 
@@ -97,8 +97,8 @@ test('blog without title is not added', async () => {
 
 test('blog without url is not added', async () => {
   const newBlog = {
-    title: "Blog without url",
-    author: "Jane Doe",
+    title: 'Blog without url',
+    author: 'Jane Doe',
     likes: 5
   }
 
@@ -131,9 +131,9 @@ test('a blog can be updated', async () => {
   const blogToUpdate = blogsAtStart[0]
 
   const updatedBlogData = {
-    title: "Updated Title",
-    author: "Updated Author",
-    url: "http://updatedurl.com",
+    title: 'Updated Title',
+    author: 'Updated Author',
+    url: 'http://updatedurl.com',
     likes: 100
   }
 
@@ -152,57 +152,57 @@ test('a blog can be updated', async () => {
   assert.strictEqual(updatedBlog.likes, updatedBlogData.likes)
 })
 
-  beforeEach(async () => {
-    await User.deleteMany({})
+beforeEach(async () => {
+  await User.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', passwordHash })
 
-    await user.save()
-  })
+  await user.save()
+})
 
-  test('creation succeeds with a fresh username', async () => {
-    const usersAtStart = await helper.usersInDb()
+test('creation succeeds with a fresh username', async () => {
+  const usersAtStart = await helper.usersInDb()
 
-    const newUser = {
-      username: 'root',
-      name: 'root',
-      password: 'root',
-    }
+  const newUser = {
+    username: 'root',
+    name: 'root',
+    password: 'root',
+  }
 
-    await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(201)
-      .expect('Content-Type', /application\/json/)
+  await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
 
-    const usersAtEnd = await helper.usersInDb()
-    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+  const usersAtEnd = await helper.usersInDb()
+  assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
 
-    const usernames = usersAtEnd.map(u => u.username)
-    assert(usernames.includes(newUser.username))
-  })
+  const usernames = usersAtEnd.map(u => u.username)
+  assert(usernames.includes(newUser.username))
+})
 
-  test('creation fails with proper statuscode and message if username already taken', async () => {
-    const usersAtStart = await helper.usersInDb()
+test('creation fails with proper statuscode and message if username already taken', async () => {
+  const usersAtStart = await helper.usersInDb()
 
-    const newUser = {
-      username: 'root',
-      name: 'Superuser',
-      password: 'salainen',
-    }
+  const newUser = {
+    username: 'root',
+    name: 'Superuser',
+    password: 'salainen',
+  }
 
-    const result = await api
-      .post('/api/users')
-      .send(newUser)
-      .expect(400)
-      .expect('Content-Type', /application\/json/)
+  const result = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
 
-    const usersAtEnd = await helper.usersInDb()
-    assert(result.body.error.includes('expected `username` to be unique'))
+  const usersAtEnd = await helper.usersInDb()
+  assert(result.body.error.includes('expected `username` to be unique'))
 
-    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
-  })
+  assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+})
 
 
 

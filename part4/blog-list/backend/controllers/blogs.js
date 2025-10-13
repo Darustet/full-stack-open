@@ -66,11 +66,11 @@ blogsRouter.put('/:id', async (request, response, next) => {
   const user = await User.findById(decodedToken.id)
 
 
-  console.log("arriver at blog controllers")
+  console.log('arriver at blog controllers')
   const blog = await Blog.findById(request.params.id)
-  console.log("after awaiting to be found")
+  console.log('after awaiting to be found')
   if (!blog) {
-    console.log("in blog controller, blog not found")
+    console.log('in blog controller, blog not found')
     return response.status(404).end()
   } else {
     const { title, author, url, likes } = request.body
