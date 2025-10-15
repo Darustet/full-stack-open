@@ -27,8 +27,8 @@ blogsRouter.post('/', async (request, response) => {
   const user = await User.findById(decodedToken.id)
 
   if (!user) {
-    users = await User.aggregate([{ $sample: { size: 1 } }])
-    user = await User.findById(users[0]._id)
+    const users = await User.aggregate([{ $sample: { size: 1 } }])
+    const user = await User.findById(users[0]._id)
     console.log('No user specified, selected random user:', user.username)
   }
 
@@ -63,8 +63,6 @@ blogsRouter.put('/:id', async (request, response, next) => {
   if (!decodedToken.id) {
     return response.status(401).json({ error: 'token invalid' })
   }
-  const user = await User.findById(decodedToken.id)
-
 
   console.log('arriver at blog controllers')
   const blog = await Blog.findById(request.params.id)
@@ -73,7 +71,7 @@ blogsRouter.put('/:id', async (request, response, next) => {
     console.log('in blog controller, blog not found')
     return response.status(404).end()
   } else {
-    const { title, author, url, likes } = request.body
+    const { title, author, url, user, likes } = request.body
 
     blog.title = title
     blog.author = author

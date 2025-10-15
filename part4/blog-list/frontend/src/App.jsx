@@ -105,8 +105,7 @@ const App = () => {
   const deleteBlog = (blogObject) => {
     blogService
       .remove(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
+      .then(() => {
         blogService.getAll().then(blogs => setBlogs(blogs))
       })
   }
@@ -130,18 +129,17 @@ const App = () => {
   const blogsToShow = () => {
     if (user !== null) {
       const sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
-
       return (
         <div>
-          {sortedBlogs.map(blog =>
+          {sortedBlogs.map(blog => (
             <Blog
               updateBlog={updateBlog}
               deleteBlog={deleteBlog}
               key={blog.id}
               blog={blog}
-              owner={blog.user && user.username === blog.user.username}
+              isOwner={blog.user && user.username === blog.user.username}
             />
-          )}
+          ))}
         </div>
       )
     }
