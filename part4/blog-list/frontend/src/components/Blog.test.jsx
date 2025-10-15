@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import { vi } from 'vitest'
+import BlogForm from './BlogForm'
 
 describe('<Blog />', () => {
   // Gets reset after each test,
@@ -13,7 +14,10 @@ describe('<Blog />', () => {
       title: 'Blog for your sprog',
       author: 'Anon',
       url: 'www.sproggerino.com',
-      likes: 2
+      likes: 2,
+      user: {
+        name: 'User'
+      }
     }
 
     render(<Blog blog={blog} updateBlog={updateBlog}/>)
@@ -24,7 +28,6 @@ describe('<Blog />', () => {
   })
 
   test('renders blog', () => {
-    screen.debug()
     const title = screen.getByText('Blog for your sprog', { exact: false })
     expect(title).toBeVisible()
 
@@ -59,8 +62,30 @@ describe('<Blog />', () => {
     await user.click(buttonLike)
     await user.click(buttonLike)
 
-    console.log(updateBlog.mock.calls)
+    //console.log(updateBlog.mock.calls)
 
     expect(updateBlog.mock.calls).toHaveLength(2)
+  })
+
+  test('<BlogForm /> calls handler with right details', async () => {
+    const addBlog = vi.fn()
+    const user = userEvent.setup()
+
+    render(<BlogForm createBlog={addBlog} />)
+
+    const inputTitle = screen.getByLabelText('title:')
+    const inputAuthor = screen.getByLabelText('author:')
+    const inputUrl = screen.getByLabelText('url:')
+    const createButton = screen.getByText('create')
+
+    await user.type(inputTitle, 'New title')
+    await user.type(inputAuthor, 'New author')
+    await user.type(inputUrl, 'www.url.com')
+    await user.click(createButton)
+
+    expect(addBlog.mock.calls).toHaveLength(1)
+    expect(addBlog.mock.calls[0][0].title).toBe('New title')
+    expect(addBlog.mock.calls[0][0].author).toBe('New author')
+    expect(addBlog.mock.calls[0][0].url).toBe('www.url.com')
   })
 })
