@@ -111,7 +111,6 @@ describe('Blog app', () => {
           'http://blog.blog'
         )
 
-        // Like second blog twice
         const secondBlog = page.getByText('Second blog Bloggy McBlogface')
         await secondBlog.getByRole('button', { name: 'view' }).click()
         const secondBlogLikeButton = secondBlog.getByRole('button', { name: 'like' })
